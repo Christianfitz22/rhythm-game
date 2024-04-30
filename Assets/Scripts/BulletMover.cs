@@ -19,9 +19,9 @@ public class BulletMover : MonoBehaviour
     {
         transform.position += direction * speed * Time.deltaTime;
 
-        if (killBounds.Contains(transform.position))
+        if (!killBounds.Contains(transform.position))
         {
-            CenterHit();
+            OutOfBounds();
         }
     }
 
@@ -32,7 +32,7 @@ public class BulletMover : MonoBehaviour
         killBounds = bounds;
     }
 
-    public void CenterHit()
+    public void OutOfBounds()
     {
         LevelRunner.AddHit();
         Destroy(gameObject);

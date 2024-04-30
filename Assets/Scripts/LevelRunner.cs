@@ -29,6 +29,7 @@ public class LevelRunner : MonoBehaviour
     // of the gameplay screen, in units
     private float edgeDistance;
     private Bounds killBounds;
+    private Bounds centerBounds;
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +37,8 @@ public class LevelRunner : MonoBehaviour
         timer = 0f;
 
         edgeDistance = Camera.main.orthographicSize;
-        //killBounds = new Bounds(Vector3.zero, Vector3.one * (edgeDistance * 2f + 2f));
-        killBounds = new Bounds(Vector3.zero, Vector3.one);
+        killBounds = new Bounds(Vector3.zero, Vector3.one * (edgeDistance * 2f + 2f));
+        centerBounds = new Bounds(Vector3.zero, Vector3.one);
 
         if (hitLabelHolder != null)
         {
@@ -89,7 +90,7 @@ public class LevelRunner : MonoBehaviour
             spawnDirection = Vector3.left;
         }
 
-        int randPrefab = Random.Range(0, 2);
+        int randPrefab = Random.Range(0, 1);
 
         if (randPrefab == 0)
         {
@@ -99,8 +100,28 @@ public class LevelRunner : MonoBehaviour
         else
         {
             GameObject nextEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-            nextEnemy.GetComponent<EnemyMover>().SetProperties(spawnDirection, bulletSpeed, killBounds);
+            nextEnemy.GetComponent<EnemyMover>().SetProperties(spawnDirection, bulletSpeed, centerBounds);
         }
+    }
+
+    void SpawnUpEnemy()
+    {
+
+    }
+
+    void SpawnDownEnemy()
+    {
+
+    }
+
+    void SpawnLeftEnemy()
+    {
+
+    }
+
+    void SpawnRightEnemy()
+    {
+
     }
 
     public static void AddHit(int points)

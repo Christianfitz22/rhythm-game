@@ -23,7 +23,6 @@ public class PlayerHits : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
         if (playerCollider.IsTouchingLayers(bulletMask))
         {
             Collider2D[] overlaps = new Collider2D[8];
@@ -34,6 +33,5 @@ public class PlayerHits : MonoBehaviour
                 overlaps[i].GetComponent<BulletMover>().HitPlayer();
             }
         }
-        */
     }
 }
