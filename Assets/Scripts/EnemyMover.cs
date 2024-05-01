@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMover : MonoBehaviour
+public class EnemyMover : MonoBehaviour, IMover
 {
     private Vector3 direction;
     private float speed;

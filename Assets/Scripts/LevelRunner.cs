@@ -17,13 +17,7 @@ public class LevelRunner : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject enemyPrefab;
 
-    public float bulletSpeed = 3f;
-
-    public int maxSpawnCount = 100;
-    private int spawnCount = 0;
-
-    private float timeInterval = 0.5f;
-    private float timer;
+    public float noteSpeed = 3f;
 
     // the distance between the edge of the square frame and the center
     // of the gameplay screen, in units
@@ -31,13 +25,22 @@ public class LevelRunner : MonoBehaviour
     private Bounds killBounds;
     private Bounds centerBounds;
 
+    public float songBpm;
+
+    private float secPerBeat;
+    private float secondPosition;
+    private float beatPosition;
+    private float dspSongTime;
+
+    private AudioSource musicSource;
+
+    private LevelBase levelContent;
+
     // Start is called before the first frame update
     void Start()
     {
-        timer = 0f;
-
         edgeDistance = Camera.main.orthographicSize;
-        killBounds = new Bounds(Vector3.zero, Vector3.one * (edgeDistance * 2f + 2f));
+        killBounds = new Bounds(Vector3.zero, Vector3.one * (edgeDistance * 2f + 4f));
         centerBounds = new Bounds(Vector3.zero, Vector3.one);
 
         if (hitLabelHolder != null)
@@ -48,18 +51,25 @@ public class LevelRunner : MonoBehaviour
         {
             missLabel = missLabelHolder;
         }
+
+        musicSource = GetComponent<AudioSource>();
+
+        secPerBeat = 60f / songBpm;
+        dspSongTime = (float)AudioSettings.dspTime;
+
+        levelContent = GetComponent<LevelBase>();
+        levelContent.Begin(this, edgeDistance + 1f, noteSpeed, secPerBeat);
+
+        musicSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= timeInterval && spawnCount < maxSpawnCount)
-        {
-            timer = 0f;
-            SpawnRandomBullet();
-            spawnCount += 1;
-        }
+        secondPosition = (float)(AudioSettings.dspTime - dspSongTime);
+        beatPosition = secondPosition / secPerBeat;
+
+        levelContent.AtBeat(beatPosition);
     }
 
     void SpawnRandomBullet()
@@ -95,106 +105,143 @@ public class LevelRunner : MonoBehaviour
         if (randPrefab == 0)
         {
             GameObject nextBullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-            nextBullet.GetComponent<BulletMover>().SetProperties(spawnDirection, bulletSpeed, killBounds);
+            nextBullet.GetComponent<BulletMover>().SetProperties(spawnDirection, noteSpeed, killBounds);
         }
         else
         {
             GameObject nextEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-            nextEnemy.GetComponent<EnemyMover>().SetProperties(spawnDirection, bulletSpeed, centerBounds);
+            nextEnemy.GetComponent<EnemyMover>().SetProperties(spawnDirection, noteSpeed, centerBounds);
         }
     }
 
-    void SpawnUpEnemy()
+    // spawn enemy of 1 of 4 types
+    public void SpawnUpEnemy()
     {
         SpawnEnemy(Vector3.up);
     }
 
-    void SpawnDownEnemy()
+    public void SpawnDownEnemy()
     {
         SpawnEnemy(Vector3.down);
     }
 
-    void SpawnLeftEnemy()
+    public void SpawnLeftEnemy()
     {
         SpawnEnemy(Vector3.left);
     }
 
-    void SpawnRightEnemy()
+    public void SpawnRightEnemy()
     {
         SpawnEnemy(Vector3.right);
     }
 
-    void SpawnUpBullet(int offset = 0)
+    // spawn bullet of 1 of 8 types
+    public void SpawnUpBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.up);
+        SpawnBulletOffset(Vector3.up, Vector3.right * offset);
     }
 
-    void SpawnDownBullet(int offset = 0)
+    public void SpawnDownBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.down);
+        SpawnBulletOffset(Vector3.down, Vector3.right * offset);
     }
 
-    void SpawnLeftBullet(int offset = 0)
+    public void SpawnLeftBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.left);
+        SpawnBulletOffset(Vector3.left, Vector3.up * offset);
     }
 
-    void SpawnRightBullet(int offset = 0)
+    public void SpawnRightBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.right);
+        SpawnBulletOffset(Vector3.right, Vector3.up * offset);
     }
 
-    void SpawnUpRightBullet(int offset = 0)
+    public void SpawnUpRightBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.up + Vector3.right);
+        SpawnBulletOffset(Vector3.up + Vector3.right, (Vector3.up + Vector3.left) * offset);
     }
 
-    void SpawnUpLeftBullet(int offset = 0)
+    public void SpawnUpLeftBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.up + Vector3.left);
+        SpawnBulletOffset(Vector3.up + Vector3.left, (Vector3.up + Vector3.right) * offset);
     }
 
-    void SpawnDownRightBullet(int offset = 0)
+    public void SpawnDownRightBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.down + Vector3.right);
+        SpawnBulletOffset(Vector3.down + Vector3.right, (Vector3.up + Vector3.right) * offset);
     }
 
-    void SpawnDownLeftBullet(int offset = 0)
+    public void SpawnDownLeftBullet(int offset = 0)
     {
-        SpawnBullet(Vector3.down + Vector3.left);
+        SpawnBulletOffset(Vector3.down + Vector3.left, (Vector3.up + Vector3.left) * offset);
     }
 
-    void SpawnEnemy(Vector3 unitPosition)
+    public void SpawnBulletOffset(Vector3 unitPosition, int offset = 0)
+    {
+        Vector3 offsetDirection;
+
+        if (unitPosition.x != 0 && unitPosition.y != 0)
+        {
+            if (unitPosition.x + unitPosition.y == 0)
+            {
+                offsetDirection = (Vector3.up + Vector3.right) * 0.5f;
+            }
+            else
+            {
+                offsetDirection = (Vector3.up + Vector3.left) * 0.5f;
+            }
+        }
+        else
+        {
+            if (unitPosition.x == 0)
+            {
+                offsetDirection = Vector3.right;
+            }
+            else
+            {
+                offsetDirection = Vector3.up;
+            }
+        }
+
+        offsetDirection *= offset;
+
+        SpawnBulletOffset(unitPosition, offsetDirection);
+    }
+
+   
+    // spawn enemy based only on unit position
+    public void SpawnEnemy(Vector3 unitPosition)
     {
         SpawnEnemy(unitPosition * (edgeDistance + 1f), -unitPosition);
     }
 
+    // spawn enemy based on exact position and travel direction
     void SpawnEnemy(Vector3 position, Vector3 direction)
     {
-        SpawnPrefab(enemyPrefab, position, direction);
+        SpawnPrefab(enemyPrefab, centerBounds, position, direction);
     }
 
-    void SpawnBullet(Vector3 unitPosition)
+    void SpawnBulletOffset(Vector3 unitPosition, Vector3 offset)
     {
-        SpawnBullet(unitPosition * (edgeDistance + 1f), -unitPosition);
+        SpawnBullet(unitPosition * (edgeDistance + 1f) + offset, -unitPosition);
     }
 
     void SpawnBullet(Vector3 position, Vector3 direction)
     {
-        SpawnPrefab(bulletPrefab, position, direction);
+        SpawnPrefab(bulletPrefab, killBounds, position, direction);
     }
 
     // given a bullet or enemy prefab, a position to spawn it, and a direction to provide its velocity,
     // spawns it in the game
-    void SpawnPrefab(GameObject prefab, Vector3 position, Vector3 direction)
+    void SpawnPrefab(GameObject prefab, Bounds bounds, Vector3 position, Vector3 direction)
     {
         GameObject nextSpawn = Instantiate(prefab, position, Quaternion.identity);
-        nextSpawn.GetComponent<IMover>().SetProperties(direction, bulletSpeed, centerBounds);
+        nextSpawn.GetComponent<IMover>().SetProperties(direction, noteSpeed, bounds);
     }
 
     public static void AddHit(int points)
     {
-        // TODO
+        // TODO point system?
         hits += 1;
         hitLabel.SetText("Hits: " + hits);
     }

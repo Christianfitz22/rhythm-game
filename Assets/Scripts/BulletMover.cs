@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletMover : MonoBehaviour
+public class BulletMover : MonoBehaviour, IMover
 {
     private Vector3 direction;
     private float speed;
