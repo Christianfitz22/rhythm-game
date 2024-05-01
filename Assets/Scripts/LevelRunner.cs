@@ -106,22 +106,90 @@ public class LevelRunner : MonoBehaviour
 
     void SpawnUpEnemy()
     {
-
+        SpawnEnemy(Vector3.up);
     }
 
     void SpawnDownEnemy()
     {
-
+        SpawnEnemy(Vector3.down);
     }
 
     void SpawnLeftEnemy()
     {
-
+        SpawnEnemy(Vector3.left);
     }
 
     void SpawnRightEnemy()
     {
+        SpawnEnemy(Vector3.right);
+    }
 
+    void SpawnUpBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.up);
+    }
+
+    void SpawnDownBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.down);
+    }
+
+    void SpawnLeftBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.left);
+    }
+
+    void SpawnRightBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.right);
+    }
+
+    void SpawnUpRightBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.up + Vector3.right);
+    }
+
+    void SpawnUpLeftBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.up + Vector3.left);
+    }
+
+    void SpawnDownRightBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.down + Vector3.right);
+    }
+
+    void SpawnDownLeftBullet(int offset = 0)
+    {
+        SpawnBullet(Vector3.down + Vector3.left);
+    }
+
+    void SpawnEnemy(Vector3 unitPosition)
+    {
+        SpawnEnemy(unitPosition * (edgeDistance + 1f), -unitPosition);
+    }
+
+    void SpawnEnemy(Vector3 position, Vector3 direction)
+    {
+        SpawnPrefab(enemyPrefab, position, direction);
+    }
+
+    void SpawnBullet(Vector3 unitPosition)
+    {
+        SpawnBullet(unitPosition * (edgeDistance + 1f), -unitPosition);
+    }
+
+    void SpawnBullet(Vector3 position, Vector3 direction)
+    {
+        SpawnPrefab(bulletPrefab, position, direction);
+    }
+
+    // given a bullet or enemy prefab, a position to spawn it, and a direction to provide its velocity,
+    // spawns it in the game
+    void SpawnPrefab(GameObject prefab, Vector3 position, Vector3 direction)
+    {
+        GameObject nextSpawn = Instantiate(prefab, position, Quaternion.identity);
+        nextSpawn.GetComponent<IMover>().SetProperties(direction, bulletSpeed, centerBounds);
     }
 
     public static void AddHit(int points)
