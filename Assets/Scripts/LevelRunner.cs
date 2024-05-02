@@ -57,7 +57,7 @@ public class LevelRunner : MonoBehaviour
         secPerBeat = 60f / songBpm;
         dspSongTime = (float)AudioSettings.dspTime;
 
-        levelContent = GetComponent<LevelBase>();
+        levelContent = new Level01();
         levelContent.Begin(this, edgeDistance + 1f, noteSpeed, secPerBeat);
 
         musicSource.Play();

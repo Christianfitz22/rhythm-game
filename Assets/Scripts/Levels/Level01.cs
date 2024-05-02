@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level01 : MonoBehaviour, LevelBase
+public class Level01 : LevelBase
 {
-    public AudioClip slash;
-
     private LevelRunner runner;
     // in units
     private float distance;

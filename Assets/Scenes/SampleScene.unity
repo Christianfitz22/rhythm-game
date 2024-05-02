@@ -726,7 +726,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1745,7 +1745,6 @@ GameObject:
   - component: {fileID: 2091304220}
   - component: {fileID: 2091304222}
   - component: {fileID: 2091304221}
-  - component: {fileID: 2091304223}
   m_Layer: 0
   m_Name: LevelRunner
   m_TagString: Untagged
@@ -1784,7 +1783,7 @@ MonoBehaviour:
   missLabelHolder: {fileID: 1290442356}
   bulletPrefab: {fileID: 3868144328881615563, guid: 822f589ae3b8a463da27d2b7792a1ad3, type: 3}
   enemyPrefab: {fileID: 2098210608432361184, guid: 85e91722338fb4c66b925a8563023b49, type: 3}
-  noteSpeed: 5
+  noteSpeed: 10
   songBpm: 170
 --- !u!82 &2091304222
 AudioSource:
@@ -1882,19 +1881,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2091304223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091304219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dd05b170c1eb409190b6c03d801b95b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slash: {fileID: 8300000, guid: 4fc812ec5b8c0492ba0b93e33ababe33, type: 3}
 --- !u!1 &2137593300
 GameObject:
   m_ObjectHideFlags: 0
