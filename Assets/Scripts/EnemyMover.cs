@@ -30,6 +30,27 @@ public class EnemyMover : MonoBehaviour, IMover
         direction = dir;
         speed = s;
         killBounds = bounds;
+        ResolveRotation();
+    }
+
+    private void ResolveRotation()
+    {
+        if (direction == Vector3.down)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 0f));
+        }
+        else if (direction == Vector3.right)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 90f));
+        }
+        else if (direction == Vector3.up)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 180f));
+        }
+        else if (direction == Vector3.left)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 270f));
+        }
     }
 
     public void CenterHit()

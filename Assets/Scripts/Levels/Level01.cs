@@ -53,18 +53,18 @@ public class Level01 : LevelBase
         content.Add(new Enemy(23, Vector3.up));
 
         content.Add(new Enemy(25, Vector3.up));
-        content.Add(new Enemy(25.5f, Vector3.up));
+        content.Add(new Enemy(25.5f, Vector3.down));
         content.Add(new Enemy(26, Vector3.up));
-        content.Add(new Enemy(27, Vector3.up));
+        content.Add(new Enemy(27, Vector3.down));
         content.Add(new Enemy(27.5f, Vector3.up));
-        content.Add(new Enemy(28, Vector3.up));
+        content.Add(new Enemy(28, Vector3.down));
 
-        content.Add(new Enemy(29, Vector3.down));
-        content.Add(new Enemy(29.5f, Vector3.down));
-        content.Add(new Enemy(30, Vector3.down));
-        content.Add(new Enemy(31, Vector3.down));
-        content.Add(new Enemy(31.5f, Vector3.down));
-        content.Add(new Enemy(32, Vector3.down));
+        content.Add(new Enemy(29, Vector3.left));
+        content.Add(new Enemy(29.5f, Vector3.right));
+        content.Add(new Enemy(30, Vector3.left));
+        content.Add(new Enemy(31, Vector3.right));
+        content.Add(new Enemy(31.5f, Vector3.left));
+        content.Add(new Enemy(32, Vector3.right));
 
         content.Add(new Bullet(33, Vector3.up));
         content.Add(new Bullet(35, Vector3.up, -1));

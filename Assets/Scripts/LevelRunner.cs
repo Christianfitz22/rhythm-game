@@ -17,7 +17,7 @@ public class LevelRunner : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject enemyPrefab;
 
-    public float noteSpeed = 3f;
+    public float noteSpeed = 2f;
 
     // the distance between the edge of the square frame and the center
     // of the gameplay screen, in units
@@ -35,6 +35,7 @@ public class LevelRunner : MonoBehaviour
     private AudioSource musicSource;
 
     private LevelBase levelContent;
+    public BeatMarkerPlacer markerPlacer;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,11 @@ public class LevelRunner : MonoBehaviour
         levelContent.Begin(this, edgeDistance + 1f, noteSpeed, secPerBeat);
 
         musicSource.Play();
+
+        // TODO
+        // secPerbeat * speed = the amount of distance a note travels in one beat
+        // use BeatMarkerPlacer to finish
+        markerPlacer.PlaceMarkers(secPerBeat * noteSpeed);
     }
 
     // Update is called once per frame

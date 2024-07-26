@@ -30,6 +30,43 @@ public class BulletMover : MonoBehaviour, IMover
         direction = dir;
         speed = s;
         killBounds = bounds;
+        ResolveRotation();
+    }
+
+    private void ResolveRotation()
+    {
+        if (direction == Vector3.down)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 0f));
+        }
+        else if (direction == Vector3.right)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 90f));
+        }
+        else if (direction == Vector3.up)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 180f));
+        }
+        else if (direction == Vector3.left)
+        {
+            transform.Rotate(new Vector3(0f, 0f, 270f));
+        }
+        else if (direction == (Vector3.down + Vector3.right))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 45f));
+        }
+        else if (direction == (Vector3.up + Vector3.right))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 135f));
+        }
+        else if (direction == (Vector3.up + Vector3.left))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 225f));
+        }
+        else if (direction == (Vector3.down + Vector3.left))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 315f));
+        }
     }
 
     public void OutOfBounds()
