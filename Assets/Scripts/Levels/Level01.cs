@@ -42,6 +42,9 @@ public class Level01 : LevelBase
     {
         content = new List<Note>();
 
+        content.Add(new Enemy(1, Vector3.up));
+        content.Add(new Enemy(5, Vector3.down));
+
         content.Add(new Enemy(9, Vector3.up));
         content.Add(new Enemy(11, Vector3.left));
         content.Add(new Enemy(13, Vector3.right));
