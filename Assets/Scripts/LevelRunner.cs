@@ -17,7 +17,11 @@ public class LevelRunner : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject enemyPrefab;
 
+    public AudioClip countoffSFX;
+
     public float noteSpeed = 2f;
+    // the number of beats the song will wait before starting
+    public int beatsDelay = 8;
 
     // the distance between the edge of the square frame and the center
     // of the gameplay screen, in units
@@ -32,10 +36,17 @@ public class LevelRunner : MonoBehaviour
     private float beatPosition;
     private float dspSongTime;
 
+    // whether the level has started (summoning notes) or not
+    private bool levelStarted;
+    // the negative time interval from the start of the song at 0
+    // when the next click of the count off should occur
+    private float nextClickTime;
+
     private AudioSource musicSource;
 
     private LevelBase levelContent;
     public BeatMarkerPlacer markerPlacer;
+    public Metronome metronome;
 
     // Start is called before the first frame update
     void Start()
@@ -56,25 +67,48 @@ public class LevelRunner : MonoBehaviour
         musicSource = GetComponent<AudioSource>();
 
         secPerBeat = 60f / songBpm;
-        dspSongTime = (float)AudioSettings.dspTime;
+        //dspSongTime = (float)AudioSettings.dspTime;
 
         levelContent = new Level01();
         levelContent.Begin(this, edgeDistance + 1f, noteSpeed, secPerBeat);
 
-        musicSource.Play();
+        //musicSource.Play();
 
-        // TODO
         // secPerbeat * speed = the amount of distance a note travels in one beat
         // use BeatMarkerPlacer to finish
         markerPlacer.PlaceMarkers(secPerBeat * noteSpeed);
+
+        secondPosition = -(beatsDelay+1) * secPerBeat;
+        levelStarted = false;
+        nextClickTime = secondPosition + secPerBeat;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        secondPosition = (float)(AudioSettings.dspTime - dspSongTime);
-        beatPosition = secondPosition / secPerBeat;
+        if (!levelStarted)
+        {
+            secondPosition += Time.deltaTime;
 
+            if (secondPosition >= 0f)
+            {
+                levelStarted = true;
+                dspSongTime = (float)AudioSettings.dspTime;
+                musicSource.Play();
+            }
+            else if (secondPosition >= nextClickTime)
+            {
+                AudioSource.PlayClipAtPoint(countoffSFX, Vector3.zero, 1.0f);
+                nextClickTime += secPerBeat;
+            }
+        }
+        else
+        {
+            secondPosition = (float)(AudioSettings.dspTime - dspSongTime);
+        }
+
+        beatPosition = secondPosition / secPerBeat;
         levelContent.AtBeat(beatPosition);
     }
 
