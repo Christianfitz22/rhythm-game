@@ -7,4 +7,6 @@ public interface LevelBase
     void Begin(LevelRunner runner, float distanceToCenter, float noteSpeed, float secPerBeat);
 
     void AtBeat(float beat);
+
+    bool IsLevelComplete();
 }

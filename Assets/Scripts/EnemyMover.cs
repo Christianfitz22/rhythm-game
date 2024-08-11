@@ -8,6 +8,9 @@ public class EnemyMover : MonoBehaviour, IMover
     private float speed;
     private Bounds killBounds;
 
+    //public AudioClip debugSound;
+    //private bool debugCheck = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,16 @@ public class EnemyMover : MonoBehaviour, IMover
         {
             CenterHit();
         }
+
+        /*
+        Vector3 flatPosition = new Vector3(transform.position.x, transform.position.y, 0f);
+        if (!debugCheck && flatPosition.magnitude <= 1f)
+        {
+            Debug.Log("test sound played");
+            AudioSource.PlayClipAtPoint(debugSound, Camera.main.transform.position);
+            debugCheck = true;
+        }
+        */
     }
 
     public void SetProperties(Vector3 dir, float s, Bounds bounds)

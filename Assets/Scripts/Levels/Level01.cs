@@ -107,6 +107,49 @@ public class Level01 : LevelBase
         content.Add(new Bullet(59, Vector3.down + Vector3.left, -1));
         content.Add(new Bullet(60, Vector3.down + Vector3.right, 1));
         content.Add(new Bullet(60, Vector3.down + Vector3.right, -1));
+
+        content.Add(new Enemy(65, Vector3.up));
+        content.Add(new Enemy(66, Vector3.left));
+        content.Add(new Enemy(67, Vector3.down));
+        content.Add(new Enemy(68, Vector3.right));
+
+        content.Add(new Enemy(69, Vector3.up));
+        content.Add(new Enemy(70, Vector3.right));
+        content.Add(new Enemy(71, Vector3.down));
+        content.Add(new Enemy(72, Vector3.left));
+
+        content.Add(new Enemy(73, Vector3.up));
+        content.Add(new Enemy(74, Vector3.down));
+        content.Add(new Enemy(75, Vector3.left));
+        content.Add(new Enemy(76, Vector3.right));
+
+        content.Add(new Enemy(77, Vector3.up));
+        content.Add(new Enemy(78, Vector3.down));
+        content.Add(new Enemy(79, Vector3.right));
+        content.Add(new Enemy(80, Vector3.left));
+
+        content.Add(new Enemy(81, Vector3.up));
+        content.Add(new Enemy(82, Vector3.down));
+        content.Add(new Enemy(83, Vector3.left));
+        content.Add(new Enemy(84, Vector3.right));
+        content.Add(new Enemy(84.5f, Vector3.up));
+        content.Add(new Enemy(85, Vector3.down));
+
+        content.Add(new Enemy(86, Vector3.left));
+        content.Add(new Enemy(87, Vector3.right));
+        content.Add(new Enemy(88, Vector3.left));
+        content.Add(new Enemy(88.5f, Vector3.down));
+        content.Add(new Enemy(89, Vector3.up));
+
+        content.Add(new Enemy(90, Vector3.right));
+        content.Add(new Enemy(91, Vector3.left));
+        content.Add(new Enemy(92, Vector3.right));
+        content.Add(new Enemy(92.5f, Vector3.up));
+        content.Add(new Enemy(93, Vector3.down));
+
+        content.Add(new Enemy(94, Vector3.up));
+        content.Add(new Enemy(95, Vector3.down));
+        content.Add(new Enemy(96, Vector3.up));
     }
 
     public void AtBeat(float beat)
@@ -147,5 +190,10 @@ public class Level01 : LevelBase
                 }
             }
         }
+    }
+
+    public bool IsLevelComplete()
+    {
+        return levelComplete;
     }
 }

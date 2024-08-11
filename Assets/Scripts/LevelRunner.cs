@@ -44,9 +44,20 @@ public class LevelRunner : MonoBehaviour
     public BeatMarkerPlacer markerPlacer;
     public Metronome metronome;
 
+    private bool activated = false;
+    private float timeDelayToFinish;
+
+    public GameObject endScreen;
+
     // Start is called before the first frame update
-    void Start()
+    public void LaunchRunner(List<Note> content)
     {
+        if (content.Count < 1)
+        {
+            Debug.Log("No note content passed to LevelRunner. Level start failed.");
+            return;
+        }
+
         edgeDistance = Camera.main.orthographicSize;
         killBounds = new Bounds(Vector3.zero, Vector3.one * (edgeDistance * 2f + 4f));
         centerBounds = new Bounds(Vector3.zero, Vector3.one);
@@ -65,7 +76,7 @@ public class LevelRunner : MonoBehaviour
         secPerBeat = 60f / songBpm;
         startDspTime = (float)AudioSettings.dspTime;
 
-        levelContent = new Level01();
+        levelContent = new LevelLoaded(content);
         levelContent.Begin(this, edgeDistance + 1f, noteSpeed, secPerBeat);
 
         musicSource.PlayScheduled(startDspTime + (beatsDelay + 1) * secPerBeat);
@@ -75,14 +86,35 @@ public class LevelRunner : MonoBehaviour
         markerPlacer.PlaceMarkers(secPerBeat * noteSpeed);
 
         metronome.MakeClicks(startDspTime, beatsDelay, secPerBeat);
+
+        activated = true;
+
+        timeDelayToFinish = (edgeDistance * 2f + 4f) / noteSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        secondPosition = (float)(AudioSettings.dspTime - startDspTime);
-        beatPosition = secondPosition / secPerBeat;
-        levelContent.AtBeat(beatPosition - beatsDelay);
+        if (activated)
+        {
+            secondPosition = (float)(AudioSettings.dspTime - startDspTime);
+            beatPosition = secondPosition / secPerBeat;
+            levelContent.AtBeat(beatPosition - beatsDelay);
+
+            if (levelContent.IsLevelComplete())
+            {
+                activated = false;
+                Invoke("EndLevel", timeDelayToFinish);
+            }
+        }
+    }
+
+    void EndLevel()
+    {
+        musicSource.Stop();
+        endScreen.SetActive(true);
+        endScreen.GetComponent<LevelEnder>().Populate(hits, hits + misses);
+        ResetCounters();
     }
 
     void SpawnRandomBullet()
@@ -268,5 +300,11 @@ public class LevelRunner : MonoBehaviour
     {
         misses += 1;
         missLabel.SetText("Miss: " + misses);
+    }
+
+    public static void ResetCounters()
+    {
+        hits = 0;
+        misses = 0;
     }
 }
