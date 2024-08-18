@@ -34,13 +34,15 @@ public class LevelStarter : MonoBehaviour
             Debug.Log("Failed to load text asset for filepath " + LevelHolder.LevelContentFilepath + ". Level load failed.");
             return;
         }
-        string[] levelLines = levelText.ToString().Split("\n", System.StringSplitOptions.RemoveEmptyEntries);
+
+        string[] lineSeparators = { "\n", "\r\n" };
+        string[] levelLines = levelText.ToString().Split(lineSeparators, System.StringSplitOptions.RemoveEmptyEntries);
 
         int separatorIndex = -1;
 
         for (int i = 0; i < levelLines.Length; i++)
         {
-            if (levelLines[i].Equals("-"))
+            if (levelLines[i][0].Equals('-'))
             {
                 separatorIndex = i;
                 break;
@@ -152,11 +154,12 @@ public class LevelStarter : MonoBehaviour
         runner.beatsDelay = countin;
         runner.noteSpeed = notespeed;
         Camera.main.orthographicSize = camerasize;
-
+             
         AudioClip currentSong = Resources.Load<AudioClip>("Songs/" + songAudioFilename);
         if (currentSong == null)
         {
             Debug.Log("Failed to acquire song file [" + songAudioFilename + "]. Level load failed.");
+            return;
         }
         gameObject.GetComponent<AudioSource>().clip = currentSong;
 
