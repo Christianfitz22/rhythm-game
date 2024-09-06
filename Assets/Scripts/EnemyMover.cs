@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour, IMover
 {
+    public AudioClip hitSFX;
+    public AudioClip missSFX;
+
     private Vector3 direction;
     private float speed;
     private Bounds killBounds;
@@ -68,12 +71,14 @@ public class EnemyMover : MonoBehaviour, IMover
 
     public void CenterHit()
     {
+        AudioSource.PlayClipAtPoint(missSFX, Camera.main.transform.position, 1.0f);
         LevelRunner.AddMiss();
         Destroy(gameObject);
     }
 
     public void HitPlayer(int accuracy)
     {
+        AudioSource.PlayClipAtPoint(hitSFX, Camera.main.transform.position, 0.5f);
         LevelRunner.AddHit(accuracy);
         Destroy(gameObject);
     }

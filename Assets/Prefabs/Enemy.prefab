@@ -161,4 +161,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfcd0c6c7ac24d57ac65d9d15cbb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugSound: {fileID: 8300000, guid: c3fc5a16c3d4c422ab6754e69ee07565, type: 3}
+  hitSFX: {fileID: 8300000, guid: 4e3067d9bae7a41b7b910017180152e7, type: 3}
+  missSFX: {fileID: 8300000, guid: f2b33fd83a8c94c8883859e6ebf15946, type: 3}

@@ -23,6 +23,8 @@ public class SongSelectManager : MonoBehaviour
     // measured in pixels per second
     public float scrollSpeed = 100;
 
+    public AudioClip selectSFX;
+
     public GameObject difficultyButtonPrefab;
 
     private Transform scrollAreaContent;
@@ -49,6 +51,8 @@ public class SongSelectManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         scrollAreaContent = this.transform.Find("ScrollArea").Find("Content");
         scrollAreaContentRect = scrollAreaContent.GetComponent<RectTransform>();
 
@@ -80,6 +84,11 @@ public class SongSelectManager : MonoBehaviour
     // assumes that we want to treat index beyond the track list bounds as edge selections
     private void SelectTrack(int index)
     {
+        if (index >= 0 && index <= track.songs.Count - 1)
+        {
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
+        }
+
         selectedTrack = Mathf.Clamp(index, 0, track.songs.Count - 1);
         float targetY = (track.songs.Count - 1) * -112.5f + selectedTrack * 225f;
         scrollAreaTargetPosition = new Vector2(0f, targetY);
@@ -114,6 +123,12 @@ public class SongSelectManager : MonoBehaviour
     private void SelectLevel(int index)
     {
         int levelCount = track.songs[selectedTrack].levels.Count;
+
+        if (index >= 0 && index <= levelCount - 1)
+        {
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
+        }
+
         selectedLevel = Mathf.Clamp(index, 0, levelCount - 1);
         float targetX = (levelCount - 1) * (-82.5f) + selectedLevel * 165f;
         levelSelectTargetPosition = new Vector2(targetX, -300f);
@@ -156,7 +171,7 @@ public class SongSelectManager : MonoBehaviour
             cancelReleasedFromLevelSelect = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Return))
         {
             menuSection = MenuSection.LevelSelect;
             levelSelectPanel.gameObject.SetActive(true);
@@ -191,7 +206,7 @@ public class SongSelectManager : MonoBehaviour
 
     private void InputLevelSelect()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Backspace))
         {
             menuSection = MenuSection.SongSelect;
             levelSelectPanel.gameObject.SetActive(false);
@@ -205,7 +220,7 @@ public class SongSelectManager : MonoBehaviour
         {
             DecrementLevel();
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.Return))
         {
             menuSection = MenuSection.LevelConfirm;
             startButton.SetActive(true);
@@ -214,7 +229,7 @@ public class SongSelectManager : MonoBehaviour
 
     private void InputLevelConfirm()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Backspace))
         {
             menuSection = MenuSection.LevelSelect;
             startButton.SetActive(false);

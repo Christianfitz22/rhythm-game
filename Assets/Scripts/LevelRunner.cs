@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelRunner : MonoBehaviour
 {
@@ -95,6 +96,11 @@ public class LevelRunner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            SceneManager.LoadScene(0);
+        }
+
         if (activated)
         {
             secondPosition = (float)(AudioSettings.dspTime - startDspTime);

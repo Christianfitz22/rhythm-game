@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BulletMover : MonoBehaviour, IMover
 {
+    public AudioClip hitSFX;
+
     private Vector3 direction;
     private float speed;
     private Bounds killBounds;
@@ -77,6 +79,7 @@ public class BulletMover : MonoBehaviour, IMover
 
     public void HitPlayer()
     {
+        AudioSource.PlayClipAtPoint(hitSFX, Camera.main.transform.position, 1.0f);
         LevelRunner.AddMiss();
         Destroy(gameObject);
     }
