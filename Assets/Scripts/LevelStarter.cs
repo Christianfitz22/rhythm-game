@@ -163,13 +163,18 @@ public class LevelStarter : MonoBehaviour
         }
         gameObject.GetComponent<AudioSource>().clip = currentSong;
 
-
+        
 
         List<Note> levelContent = new List<Note>();
 
         for (int i = separatorIndex + 1; i < levelLines.Length; i++)
         {
             string[] setupLine = levelLines[i].Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+
+            if (setupLine[0].Length >= 2 && setupLine[0].Substring(0, 2).Equals("//"))
+            {
+                continue;
+            }
 
             if (setupLine.Length < 2 || setupLine.Length > 3)
             {

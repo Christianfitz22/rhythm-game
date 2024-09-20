@@ -98,7 +98,7 @@ public class LevelRunner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("MainMenu");
         }
 
         if (activated)

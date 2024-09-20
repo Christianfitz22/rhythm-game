@@ -51,7 +51,10 @@ public class SongSelectManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Screen.fullScreen = false;
+        //Screen.fullScreenMode = FullScreenMode.Windowed;
+        //Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        //Cursor.lockState = CursorLockMode.Locked;
 
         scrollAreaContent = this.transform.Find("ScrollArea").Find("Content");
         scrollAreaContentRect = scrollAreaContent.GetComponent<RectTransform>();
@@ -208,6 +211,8 @@ public class SongSelectManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Backspace))
         {
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
+
             menuSection = MenuSection.SongSelect;
             levelSelectPanel.gameObject.SetActive(false);
             cancelReleasedFromLevelSelect = false;
@@ -224,6 +229,8 @@ public class SongSelectManager : MonoBehaviour
         {
             menuSection = MenuSection.LevelConfirm;
             startButton.SetActive(true);
+
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
         }
     }
 
@@ -231,6 +238,8 @@ public class SongSelectManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Backspace))
         {
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
+
             menuSection = MenuSection.LevelSelect;
             startButton.SetActive(false);
         }
@@ -240,7 +249,10 @@ public class SongSelectManager : MonoBehaviour
             LevelHolder.LevelContentFilepath = track.songs[selectedTrack].levels[selectedLevel].contentFilePath;
             LevelHolder.SelectedSong = track.songs[selectedTrack];
             LevelHolder.SelectedDifficulty = track.songs[selectedTrack].levels[selectedLevel].difficulty;
-            SceneManager.LoadScene(1);
+
+            AudioSource.PlayClipAtPoint(selectSFX, Camera.main.transform.position, 1.0f);
+
+            SceneManager.LoadScene("Gameplay");
         }
     }
 }

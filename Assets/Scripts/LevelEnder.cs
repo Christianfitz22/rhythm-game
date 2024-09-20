@@ -87,7 +87,7 @@ public class LevelEnder : MonoBehaviour
             }
             else if (Input.anyKeyDown)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene("MainMenu");
             }
         }
         else
